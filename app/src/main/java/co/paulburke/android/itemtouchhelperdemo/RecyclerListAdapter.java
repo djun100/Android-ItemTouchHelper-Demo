@@ -16,11 +16,8 @@
 
 package co.paulburke.android.itemtouchhelperdemo;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,14 +25,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cy.draghelper.ItemTouchHelperAdapter;
+import com.cy.draghelper.ItemTouchHelperViewHolder;
+import com.cy.draghelper.UtilDrag;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import co.paulburke.android.itemtouchhelperdemo.helper.ItemTouchHelperAdapter;
-import co.paulburke.android.itemtouchhelperdemo.helper.ItemTouchHelperViewHolder;
-import co.paulburke.android.itemtouchhelperdemo.helper.UtilDrag;
 
 /**
  * Simple RecyclerView.Adapter that implements {@link ItemTouchHelperAdapter} to respond to move and
@@ -109,8 +107,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.text);
-            handleView = (ImageView) itemView.findViewById(R.id.handle);
+            textView = itemView.findViewById(R.id.text);
+            handleView = itemView.findViewById(R.id.handle);
         }
 
         @Override

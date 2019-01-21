@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.paulburke.android.itemtouchhelperdemo.helper;
+package com.cy.draghelper;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.GridLayoutManager;
@@ -93,11 +93,11 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
             final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
             final int swipeFlags = 0;
-            return makeMovementFlags(dragFlags, swipeFlags);
+            return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags);
         } else {
             final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
             final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-            return makeMovementFlags(dragFlags, swipeFlags);
+            return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags);
         }
     }
 

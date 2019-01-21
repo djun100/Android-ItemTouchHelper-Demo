@@ -1,4 +1,4 @@
-package co.paulburke.android.itemtouchhelperdemo.helper;
+package com.cy.draghelper;
 
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;

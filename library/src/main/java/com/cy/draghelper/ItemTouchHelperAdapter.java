@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.paulburke.android.itemtouchhelperdemo.helper;
+package com.cy.draghelper;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;

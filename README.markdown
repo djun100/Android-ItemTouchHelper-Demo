@@ -1,4 +1,13 @@
 ## usage
+```GRADLE
+allprojects {
+	repositories {
+		jcenter()
+		maven { url "https://jitpack.io" }
+	}
+}
+implementation 'com.github.djun100:Android-ItemTouchHelper-Demo:-SNAPSHOT'
+```
 
 ```JAVA
 public class MyAdapter implements ItemTouchHelperAdapter {
