@@ -96,6 +96,10 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         this.canDragOrNot = canDragOrNot;
     }
 
+    public boolean getCanDragOrNot() {
+        return canDragOrNot;
+    }
+
     @Override
     public boolean isLongPressDragEnabled() {
         return true;

@@ -32,6 +32,18 @@ public class UtilDrag{
         kvs.get(adapter).callback.setCanDragOrNot(enableDragOrNot);
     }
 
+    public static void enableDrag(ItemTouchHelperAdapter adapter){
+        kvs.get(adapter).callback.setCanDragOrNot(true);
+    }
+
+    public static void disableDrag(ItemTouchHelperAdapter adapter){
+        kvs.get(adapter).callback.setCanDragOrNot(false);
+    }
+
+    public static boolean isDragMode(ItemTouchHelperAdapter adapter){
+        return kvs.get(adapter).callback.getCanDragOrNot();
+    }
+
     private static class DragHelperBean{
         private ItemTouchHelper itemTouchHelper;
         private SimpleItemTouchHelperCallback callback;
