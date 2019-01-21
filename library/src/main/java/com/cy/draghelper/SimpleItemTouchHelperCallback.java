@@ -17,7 +17,6 @@
 package com.cy.draghelper;
 
 import android.graphics.Canvas;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
@@ -70,12 +69,28 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private int dragFrom = -1;
     private int dragTo = -1;
     public static final float ALPHA_FULL = 1.0f;
-
+    private boolean canDragHorizontal,canDragVertical, canSwipeDismiss;
     private final ItemTouchHelperAdapter mAdapter;
 
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
-        mAdapter = adapter;
+        this(adapter,true,true);
     }
+
+    public SimpleItemTouchHelperCallback(
+            ItemTouchHelperAdapter adapter,
+            boolean canDragHorizontal,boolean canDragVertical) {
+        this(adapter,true,true,false);
+    }
+
+    public SimpleItemTouchHelperCallback(
+            ItemTouchHelperAdapter adapter,
+            boolean canDragHorizontal,boolean canDragVertical,boolean enableSwipeDismiss) {
+        mAdapter = adapter;
+        this.canDragHorizontal=canDragHorizontal;
+        this.canDragVertical=canDragVertical;
+        this.canSwipeDismiss =enableSwipeDismiss;
+    }
+
 
     @Override
     public boolean isLongPressDragEnabled() {
@@ -90,15 +105,21 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         // Set movement flags based on the layout manager
-        if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
-            final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-            final int swipeFlags = 0;
-            return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags);
-        } else {
-            final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-            final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-            return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags);
+        int dragFlags = 0;
+        int swipeFlags;
+        if (canDragHorizontal){
+            dragFlags =ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
         }
+        if (canDragVertical) {
+            dragFlags = dragFlags == 0 ? ItemTouchHelper.UP | ItemTouchHelper.DOWN :
+                    dragFlags | ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+        }
+        if (canSwipeDismiss){
+            swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+        }else {
+            swipeFlags = 0;
+        }
+        return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags);
     }
 
     @Override
