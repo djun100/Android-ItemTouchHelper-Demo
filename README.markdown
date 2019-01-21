@@ -1,19 +1,24 @@
 ## usage
 
-```
-//1、
- ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
- mItemTouchHelper = new ItemTouchHelper(callback);
- mItemTouchHelper.attachToRecyclerView(recyclerView);
-//2、
- Adapter implements ItemTouchHelperAdapter {
+```JAVA
+public class MyAdapter implements ItemTouchHelperAdapter {
+
+     public RecyclerListAdapter(RecyclerView recyclerView) {
+         UtilDrag.attach(this,recyclerView);
+      }
+
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
+    public boolean onDrag(int fromPosition, int toPosition) {
         Collections.swap(mItems, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         return true;
     }
 
+    //view dropped,need commit data
+    @Override
+    public void onDrop(int fromPosition, int toPosition) {
+
+    }
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
 
@@ -21,9 +26,7 @@
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag(holder);
-                }
+                UtilDrag.doTouch(RecyclerListAdapter.this,viewHolder, event);
                 return false;
             }
         });
