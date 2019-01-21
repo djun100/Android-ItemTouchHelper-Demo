@@ -10,6 +10,9 @@ implementation 'com.github.djun100:Android-ItemTouchHelper-Demo:-SNAPSHOT'
 ```
 
 ```JAVA
+\\enable or disable drag
+UtilDrag.enableDrag(adapter,true);
+...
 public class MyAdapter implements ItemTouchHelperAdapter {
 
      public RecyclerListAdapter(RecyclerView recyclerView) {

@@ -71,6 +71,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public static final float ALPHA_FULL = 1.0f;
     private boolean canDragHorizontal,canDragVertical, canSwipeDismiss;
     private final ItemTouchHelperAdapter mAdapter;
+    private boolean canDragOrNot=true;
 
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         this(adapter,true,true);
@@ -91,6 +92,9 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         this.canSwipeDismiss =enableSwipeDismiss;
     }
 
+    public void setCanDragOrNot(boolean canDragOrNot) {
+        this.canDragOrNot = canDragOrNot;
+    }
 
     @Override
     public boolean isLongPressDragEnabled() {
@@ -106,18 +110,20 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         // Set movement flags based on the layout manager
         int dragFlags = 0;
-        int swipeFlags;
-        if (canDragHorizontal){
-            dragFlags =ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-        }
-        if (canDragVertical) {
-            dragFlags = dragFlags == 0 ? ItemTouchHelper.UP | ItemTouchHelper.DOWN :
-                    dragFlags | ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        }
-        if (canSwipeDismiss){
-            swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-        }else {
-            swipeFlags = 0;
+        int swipeFlags = 0;
+        if (canDragOrNot) {
+            if (canDragHorizontal){
+                dragFlags =ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+            }
+            if (canDragVertical) {
+                dragFlags = dragFlags == 0 ? ItemTouchHelper.UP | ItemTouchHelper.DOWN :
+                        dragFlags | ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+            }
+            if (canSwipeDismiss){
+                swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+            }else {
+                swipeFlags = 0;
+            }
         }
         return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags);
     }

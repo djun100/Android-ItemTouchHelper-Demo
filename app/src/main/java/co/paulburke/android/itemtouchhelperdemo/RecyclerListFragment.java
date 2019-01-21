@@ -25,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cy.draghelper.UtilDrag;
+
 /**
  * @author Paul Burke (ipaulpro)
  */
@@ -44,6 +46,7 @@ public class RecyclerListFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) view;
         RecyclerListAdapter adapter = new RecyclerListAdapter(recyclerView);
+        UtilDrag.enableDrag(adapter,true);
 //        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
