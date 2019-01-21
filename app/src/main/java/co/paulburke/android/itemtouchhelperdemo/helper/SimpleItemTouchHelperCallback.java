@@ -24,19 +24,24 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 /**
  * usage
  *
-1、
- ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
- mItemTouchHelper = new ItemTouchHelper(callback);
- mItemTouchHelper.attachToRecyclerView(recyclerView);
-2、
  Adapter implements ItemTouchHelperAdapter {
+
+     public RecyclerListAdapter(RecyclerView recyclerView) {
+         UtilDrag.attach(this,recyclerView);
+      }
+
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
+    public boolean onDrag(int fromPosition, int toPosition) {
         Collections.swap(mItems, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         return true;
     }
 
+    //view dropped,need commit data
+    @Override
+    public void onDrop(int fromPosition, int toPosition) {
+
+    }
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
 
@@ -44,9 +49,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag(holder);
-                }
+                UtilDrag.doTouch(RecyclerListAdapter.this,viewHolder, event);
                 return false;
             }
         });
@@ -64,7 +67,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  * @author Paul Burke (ipaulpro)
  */
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
-
+    private int dragFrom = -1;
+    private int dragTo = -1;
     public static final float ALPHA_FULL = 1.0f;
 
     private final ItemTouchHelperAdapter mAdapter;
@@ -103,8 +107,14 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             return false;
         }
 
+        int fromPosition = source.getAdapterPosition();
+        int toPosition = target.getAdapterPosition();
+        if(dragFrom == -1) {
+            dragFrom =  fromPosition;
+        }
+        dragTo = toPosition;
         // Notify the adapter of the move
-        mAdapter.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
+        mAdapter.onDrag(fromPosition, toPosition);
         return true;
     }
 
@@ -151,5 +161,10 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
             itemViewHolder.onItemClear();
         }
+
+        if(dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+            mAdapter.onDrop(dragFrom, dragTo);
+        }
+        dragFrom = dragTo = -1;
     }
 }
